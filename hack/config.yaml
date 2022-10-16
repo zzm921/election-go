@@ -1,0 +1,9 @@
+
+# GoFrame CLI tool configuration.
+gfcli:
+  gen:
+    dao:
+    - link:            "mysql:root:zhexia@tcp(127.0.0.1:3306)/election"
+      tables:          "accounts,candidates,election_config_candidates,elections,election_user_details"
+      descriptionTag:  true
+      noModelComment:  true

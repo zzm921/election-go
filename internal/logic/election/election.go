@@ -51,3 +51,19 @@ func (s *sElection) Create(ctx context.Context, in model.ElectionCreateInput) *r
 
 	return &response.ResultRes{Code: response.OkCode, Message: response.OkMsg}
 }
+
+
+func (s *sElection) Update(ctx context.Context, in model.ElectionCreateInput) *response.ResultRes {
+	
+	return &response.ResultRes{Code: response.OkCode, Message: response.OkMsg}
+}
+
+func (s *sElection) changeStatus(ctx context.Context, in model.ElectionCreateInput) *response.ResultRes {
+	
+	return &response.ResultRes{Code: response.OkCode, Message: response.OkMsg}
+}
+
+func (s *sElection) Get(ctx context.Context, in model.ElectionCreateInput) *response.ResultRes {
+	
+	return &response.ResultRes{Code: response.OkCode, Message: response.OkMsg}
+}

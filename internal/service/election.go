@@ -14,6 +14,8 @@ import (
 type (
 	IElection interface {
 		Create(ctx context.Context, in model.ElectionCreateInput) *response.ResultRes
+		ChangeStatus(ctx context.Context, in model.ElectionChangeStatuInput) *response.ResultRes
+		Get(ctx context.Context, in model.ElectionGetInput) *response.ResultRes
 	}
 )
 

@@ -6,6 +6,7 @@ import (
 	_ "election/internal/logic"
 
 	"election/internal/cmd"
+
 	"github.com/gogf/gf/v2/os/gctx"
 )
 

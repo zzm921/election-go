@@ -10,6 +10,8 @@ import (
 	"election/internal/service"
 
 	"github.com/gogf/gf/v2/database/gdb"
+	"github.com/gogf/gf/v2/errors/gcode"
+	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 )
 
@@ -25,17 +27,21 @@ func New() *sElection {
 	return &sElection{}
 }
 
-func (s *sElection) Create(ctx context.Context, in model.ElectionCreateInput) *response.ResultRes {
+func (s *sElection) Create(ctx context.Context, in model.ElectionCreateInput) (err error) {
 	//查看传入的候选人信息是否存在
 	candidates := in.Candidates
 	if len(candidates) < 2 {
-		return &response.ResultRes{Code: response.IncorrectSignatureCode, Message: "候选人个数不能小于2"}
+		return gerror.NewCode(gcode.CodeInvalidParameter, "候选人数应该大于2")
 	}
 	dao.Elections.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
+		//创建选举并获取创建后的id
 		electionId, err := dao.Elections.Ctx(ctx).Data(do.Elections{
 			Title:        in.Title,
 			Introduction: in.Introduction,
 		}).InsertAndGetId()
+		if err != nil {
+			return err
+		}
 		var electionConfigCandidateList []entity.ElectionConfigCandidates
 		for _, candidateId := range candidates {
 			electionConfigCandidateList = append(electionConfigCandidateList, entity.ElectionConfigCandidates{
@@ -49,35 +55,35 @@ func (s *sElection) Create(ctx context.Context, in model.ElectionCreateInput) *r
 
 	})
 	//查询是否有对应的账号密码
-	return &response.ResultRes{Code: response.OkCode, Message: response.OkMsg}
+	return
 }
 
-func (s *sElection) ChangeStatus(ctx context.Context, in model.ElectionChangeStatuInput) *response.ResultRes {
+func (s *sElection) ChangeStatus(ctx context.Context, in model.ElectionChangeStatuInput) (err error) {
 	electionId := in.ElectionId
 	status := in.Status
 	//查看该选举是否存在
 	var electionsDbResult *entity.Elections
-	err := dao.Elections.Ctx(ctx).Where(do.Elections{Id: electionId}).Scan(&electionsDbResult)
-	if err != nil {
-		return &response.ResultRes{Code: response.ErrorCode, Message: response.ErrorMsg, Data: err}
+	dberr := dao.Elections.Ctx(ctx).Where(do.Elections{Id: electionId}).Scan(&electionsDbResult)
+	if dberr != nil {
+		return dberr
 	}
 	//选举不存在返回错误
 	if electionsDbResult == nil {
-		return &response.ResultRes{Code: response.DataNoExistCode, Message: "选举不存在"}
+		return gerror.NewCode(gcode.New(response.DataNoExistCode, "", nil), "选举不存在")
 	}
 	//校验选举状态 只能从 未开始0->开始1->结束2
 	if status-electionsDbResult.Status != 1 {
-		return &response.ResultRes{Code: response.IncorrectSignatureCode, Message: "无法设置改选举状态"}
+		return gerror.Newf(`无法设置该status参数`)
 	}
 	//更新选举状态
 	_, err2 := dao.Elections.Ctx(ctx).Data(g.Map{"status": status}).Where(g.Map{"Id": electionId}).Update()
 	if err2 != nil {
-		return &response.ResultRes{Code: response.ErrorCode, Message: response.ErrorMsg, Data: err}
+		return err2
 	}
-	return &response.ResultRes{Code: response.OkCode, Message: response.OkMsg}
+	return
 }
 
-func (s *sElection) Get(ctx context.Context, in model.ElectionGetInput) *response.ResultRes {
+func (s *sElection) Get(ctx context.Context, in model.ElectionGetInput) (*model.ElectionGetOut, error) {
 	page := in.Page
 	limit := in.Size
 	offset := (page - 1) * limit
@@ -85,7 +91,7 @@ func (s *sElection) Get(ctx context.Context, in model.ElectionGetInput) *respons
 	err := dao.Elections.Ctx(ctx).WithAll().Limit(offset, limit).Scan(&electionsDbResult)
 	count, err2 := dao.Elections.Ctx(ctx).Count()
 	if err != nil || err2 != nil {
-		return &response.ResultRes{Code: response.ErrorCode, Message: response.ErrorMsg, Data: err}
+		return nil, err
 	}
 
 	//处理list数据
@@ -105,11 +111,10 @@ func (s *sElection) Get(ctx context.Context, in model.ElectionGetInput) *respons
 		}
 		list = append(list, &obj)
 	}
-
 	electionGetOut := model.ElectionGetOut{
 		Count: count,
 		List:  list,
 	}
 
-	return &response.ResultRes{Code: response.OkCode, Message: response.OkMsg, Data: electionGetOut}
+	return &electionGetOut, nil
 }

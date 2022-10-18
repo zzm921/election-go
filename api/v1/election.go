@@ -31,8 +31,7 @@ type ElectionGetReq struct {
 	Size   int `d:"10" v:"max:50#分页数量最大50条"`
 }
 type ElectionGetRes struct {
-	Count int
-	List  []*model.ElectionGetOutListObject
+	*model.ElectionGetOut
 }
 
 // 获取选举

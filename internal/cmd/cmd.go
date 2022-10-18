@@ -29,6 +29,7 @@ var (
 				group.Bind(
 					controller.Account,
 					controller.Electoin,
+					controller.Candidate,
 				)
 				// Special handler that needs authentication.
 				// group.Group("/", func(group *ghttp.RouterGroup) {

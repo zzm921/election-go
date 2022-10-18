@@ -28,10 +28,19 @@ func New() *sElection {
 }
 
 func (s *sElection) Create(ctx context.Context, in model.ElectionCreateInput) (err error) {
-	//查看传入的候选人信息是否存在
+
 	candidates := in.Candidates
 	if len(candidates) < 2 {
 		return gerror.NewCode(gcode.CodeInvalidParameter, "候选人数应该大于2")
+	}
+	//查看传入的候选人信息是否存在
+	var candidateDbinfos = []*entity.Candidates{}
+	candidateErr := dao.Candidates.Ctx(ctx).WhereIn("id", candidates).Scan(&candidateDbinfos)
+	if candidateErr != nil {
+		return err
+	}
+	if len(candidates) != len(candidateDbinfos) {
+		return gerror.NewCode(gcode.CodeInvalidParameter, "非法的候选人信息")
 	}
 	dao.Elections.Transaction(ctx, func(ctx context.Context, tx *gdb.TX) error {
 		//创建选举并获取创建后的id

@@ -6,6 +6,7 @@ type AccountLoginInput struct {
 }
 
 type AccountLoginOut struct {
+	Id       int
 	Token    string
 	Username string
 	Role     int

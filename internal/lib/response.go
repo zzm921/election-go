@@ -1,4 +1,4 @@
-package response
+package lib
 
 import (
 	"net/http"
@@ -7,20 +7,18 @@ import (
 )
 
 var (
-	OkCode                 = http.StatusOK
-	OkMsg                  = "请求成功"
-	ErrorCode              = http.StatusInternalServerError
-	ErrorMsg               = "请求失败"
-	IncorrectSignatureCode = 1005 // 数据已存在
-	IncorrectSignatureMsg  = "无效签名"
-	DataExistCode          = 1001 // 数据已存在
-	DataExistMsg           = "数据已存在"
-	ParamValidErrCode      = 1002      // 参数校验失败
-	ParamValidErrMsg       = "参数校验失败"  // 参数校验失败
-	DataNoExistCode        = 1003      // 帐号不存在
-	DataNoExistMsg         = "数据不存在"   //
-	AccountValidErrCode    = 1004      // 帐号或密码错误
-	AccountValidErrMsg     = "帐号或密码错误" // 帐号或密码错误
+	OkCode              = http.StatusOK
+	OkMsg               = "请求成功"
+	ErrorCode           = http.StatusInternalServerError
+	ErrorMsg            = "请求失败"
+	DataExistCode       = 1001 // 数据已存在
+	DataExistMsg        = "数据已存在"
+	ParamValidErrCode   = 1002      // 参数校验失败
+	ParamValidErrMsg    = "参数校验失败"  // 参数校验失败
+	DataNoExistCode     = 1003      // 帐号不存在
+	DataNoExistMsg      = "数据不存在"   //
+	AccountValidErrCode = 1004      // 帐号或密码错误
+	AccountValidErrMsg  = "帐号或密码错误" // 帐号或密码错误
 
 )
 

@@ -1,6 +1,8 @@
 package v1
 
 import (
+	"election/internal/model"
+
 	"github.com/gogf/gf/v2/frame/g"
 )
 
@@ -9,4 +11,6 @@ type AccountSignUpReq struct {
 	Username string `v:"required"`
 	Password string `v:"required"`
 }
-type AccountSignUpRes struct{}
+type AccountSignUpRes struct {
+	*model.AccountLoginOut
+}

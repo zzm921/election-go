@@ -8,7 +8,6 @@ package service
 import (
 	"context"
 	"election/internal/model"
-
 )
 
 type (

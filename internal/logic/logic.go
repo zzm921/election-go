@@ -9,4 +9,5 @@ import (
 	_ "election/internal/logic/candidate"
 	_ "election/internal/logic/election"
 	_ "election/internal/logic/middleware"
+	_ "election/internal/logic/user"
 )

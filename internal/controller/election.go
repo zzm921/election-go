@@ -40,3 +40,30 @@ func (c *cElection) ChangeStatus(ctx context.Context, req *v1.ElectionChangeStat
 	})
 	return
 }
+
+func (c *cElection) GetElectionCandidate(ctx context.Context, req *v1.ElectionCandidateGetReq) (res *v1.ElectionCandidateGetRes, err error) {
+	electionCandidateGetOut, err := service.Election().GetElectionCandidate(ctx, model.ElectionCandidateGetInput{
+		Page:       req.Page,
+		Size:       req.Size,
+		ElectionId: req.ElectionId,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+	return &v1.ElectionCandidateGetRes{ElectionCandidateGetOut: electionCandidateGetOut}, nil
+}
+
+func (c *cElection) GetElectionCandidateVote(ctx context.Context, req *v1.ElectionCandidateVoteGetReq) (res *v1.ElectionCandidateVoteGetRes, err error) {
+	electionCandidateVoteGetOut, err := service.Election().GetElectionCandidateVote(ctx, model.ElectionCandidateVoteGetInput{
+		Page:        req.Page,
+		Size:        req.Size,
+		ElectionId:  req.ElectionId,
+		CandidateId: req.CandidateId,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+	return &v1.ElectionCandidateVoteGetRes{ElectionCandidateVoteGetOut: electionCandidateVoteGetOut}, nil
+}

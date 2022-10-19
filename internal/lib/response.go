@@ -1,25 +1,18 @@
 package lib
 
 import (
-	"net/http"
-
 	"github.com/gogf/gf/v2/net/ghttp"
 )
 
 var (
-	OkCode              = http.StatusOK
-	OkMsg               = "请求成功"
-	ErrorCode           = http.StatusInternalServerError
-	ErrorMsg            = "请求失败"
-	DataExistCode       = 1001 // 数据已存在
-	DataExistMsg        = "数据已存在"
-	ParamValidErrCode   = 1002      // 参数校验失败
-	ParamValidErrMsg    = "参数校验失败"  // 参数校验失败
-	DataNoExistCode     = 1003      // 帐号不存在
-	DataNoExistMsg      = "数据不存在"   //
-	AccountValidErrCode = 1004      // 帐号或密码错误
-	AccountValidErrMsg  = "帐号或密码错误" // 帐号或密码错误
+	DataExistCode = 1001 // 数据已存在
+	DataExistMsg  = "数据已存在"
 
+	DataNoExistCode = 1002    // 帐号不存在
+	DataNoExistMsg  = "数据不存在" //
+
+	AuthorizedFailCode = 1003
+	AuthorizedFailMsg  = "无效token"
 )
 
 type ResultRes struct {

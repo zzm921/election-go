@@ -10,4 +10,5 @@ type ElectionConfigCandidates struct {
 	CandidateId int `json:"candidateId" description:""`
 	ElectionId  int `json:"electionId"  description:""`
 	VoteCount   int `json:"voteCount"   description:""`
+	CandidateInfo *Candidates `orm:"with:id=CandidateId"`
 }

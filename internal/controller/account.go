@@ -25,7 +25,7 @@ func (c *cAccount) Login(ctx context.Context, req *v1.AccountSignUpReq) (res *v1
 	}
 	accountJsonStr, _ := json.Marshal(&accountLoginOut)
 	//将登陆信息存入redis中
-	_, err = g.Redis().Do(ctx, "SETEX", "token", 86400, string(accountJsonStr))
+	_, err = g.Redis().Do(ctx, "SETEX", accountLoginOut.Token, 86400, string(accountJsonStr))
 	if err != nil {
 		return nil, err
 	}

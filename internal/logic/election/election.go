@@ -3,6 +3,7 @@ package election
 import (
 	"context"
 	"election/internal/dao"
+	"election/internal/lib"
 	response "election/internal/lib"
 	"election/internal/model"
 	"election/internal/model/do"
@@ -89,6 +90,11 @@ func (s *sElection) ChangeStatus(ctx context.Context, in model.ElectionChangeSta
 	if err2 != nil {
 		return err2
 	}
+	if status == 2 {
+		//发送选举结果邮件
+		go lib.SendElectionResult(ctx, in.ElectionId)
+
+	}
 	return
 }
 
@@ -125,5 +131,58 @@ func (s *sElection) Get(ctx context.Context, in model.ElectionGetInput) (*model.
 		List:  list,
 	}
 
+	return &electionGetOut, nil
+}
+
+func (s *sElection) GetElectionCandidate(ctx context.Context, in model.ElectionCandidateGetInput) (*model.ElectionCandidateGetOut, error) {
+	page := in.Page
+	limit := in.Size
+	offset := (page - 1) * limit
+	electionsCandidateDbResult := []*entity.ElectionConfigCandidates{}
+	err := dao.ElectionConfigCandidates.Ctx(ctx).Where(g.Map{"electionId": in.ElectionId}).WithAll().Limit(offset, limit).Scan(&electionsCandidateDbResult)
+	count, err2 := dao.ElectionConfigCandidates.Ctx(ctx).Where(g.Map{"electionId": in.ElectionId}).Count()
+	if err != nil || err2 != nil {
+		return nil, err
+	}
+	if err2 != nil {
+		return nil, err2
+	}
+
+	//处理list数据
+	list := []*model.ElectionCandidateGetOutListObject{}
+	for _, candidate := range electionsCandidateDbResult {
+		obj := model.ElectionCandidateGetOutListObject{
+			CandidateId:   candidate.CandidateId,
+			VoteCount:     candidate.VoteCount,
+			CandidateInfo: candidate.CandidateInfo,
+		}
+		list = append(list, &obj)
+
+	}
+	electionGetOut := model.ElectionCandidateGetOut{
+		Count: count,
+		List:  list,
+	}
+	return &electionGetOut, nil
+}
+
+func (s *sElection) GetElectionCandidateVote(ctx context.Context, in model.ElectionCandidateVoteGetInput) (*model.ElectionCandidateVoteGetOut, error) {
+	page := in.Page
+	limit := in.Size
+	offset := (page - 1) * limit
+	electionUserDetails := []*entity.ElectionUserDetails{}
+	err := dao.ElectionUserDetails.Ctx(ctx).Where(g.Map{"electionId": in.ElectionId, "candidateId": in.CandidateId}).WithAll().Limit(offset, limit).Scan(&electionUserDetails)
+	count, err2 := dao.ElectionConfigCandidates.Ctx(ctx).Where(g.Map{"electionId": in.ElectionId}).Count()
+	if err != nil || err2 != nil {
+		return nil, err
+	}
+	if err2 != nil {
+		return nil, err2
+	}
+
+	electionGetOut := model.ElectionCandidateVoteGetOut{
+		Count: count,
+		List:  electionUserDetails,
+	}
 	return &electionGetOut, nil
 }

@@ -38,6 +38,6 @@ type CandidateGetInput struct {
 }
 
 type CandidateGetOut struct {
-	Count int
-	List  []*entity.Candidates
+	Count int                  `json:"count"          description:"总数"`
+	List  []*entity.Candidates `json:"list"          description:"数据"`
 }

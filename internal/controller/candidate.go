@@ -21,6 +21,16 @@ func (c *cCandidate) Create(ctx context.Context, req *v1.CandidateCreateReq) (re
 	return
 }
 
+func (c *cCandidate) Update(ctx context.Context, req *v1.CandidateUpdateReq) (res *v1.CandidateUpdateRes, err error) {
+	err = service.Candidate().Update(ctx, model.CandidateUpdateInput{
+		CandidateId:  req.CandidateId,
+		Name:         req.Name,
+		Introduction: req.Introduction,
+		Image:        req.Image,
+	})
+	return
+}
+
 func (c *cCandidate) Get(ctx context.Context, req *v1.CandidateGetReq) (res *v1.CandidateGetRes, err error) {
 	candidateGetOut, err := service.Candidate().Get(ctx, model.CandidateGetInput{
 		Page: req.Page,

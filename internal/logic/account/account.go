@@ -4,10 +4,12 @@ import (
 	"context"
 	"crypto/md5"
 	"election/internal/dao"
+	"election/internal/lib"
 	"election/internal/model"
 	"election/internal/model/do"
 	"election/internal/model/entity"
 	"election/internal/service"
+	"encoding/base64"
 	"fmt"
 	"strconv"
 	"time"
@@ -30,11 +32,19 @@ func New() *sAccount {
 
 // SignIn creates session for given user account.
 func (s *sAccount) Login(ctx context.Context, in model.AccountLoginInput) (*model.AccountLoginOut, error) {
+	password := in.Password
+	bytesPass, _ := base64.StdEncoding.DecodeString(password)
+	tpass, aesErr := lib.AesDecrypt([]byte(bytesPass), []byte(lib.AES_KEY))
+	if aesErr != nil {
+		return nil, gerror.NewCode(gcode.CodeInvalidParameter, "密码解析错误")
+	}
+	//根据解析的密码，对密码进行加盐md5。与数据库进行对比
+	passwordMd5Salt := lib.MD5_SALT(tpass, []byte(lib.SLAT))
 	var account *entity.Accounts
 	//查询是否有对应的账号密码
 	var err = dao.Accounts.Ctx(ctx).Where(do.Accounts{
 		Username: in.Username,
-		Password: in.Password,
+		Password: passwordMd5Salt,
 	}).Scan(&account)
 	if err != nil {
 		return nil, err

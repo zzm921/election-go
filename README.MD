@@ -3,23 +3,23 @@
 项目提供后台管理员登录接口，登录后可进行候选人录入修改，选举录入，选举状态修改，查看选举状态等功能。为用户提供查看选举信息、投票功能。
 
 #### 项目运行
-1、安装`go`和`goframe`环境
+1. 安装`go`和`goframe`环境
 可参考`https://goframe.org/pages/viewpage.action?pageId=1114399`
-2、下载项目
+2. 下载项目
 `git clone git@github.com:zzm921/election-go.git`
-3、创建数据库
+3. 创建数据库
 运行项目中sql文件 `manifest\sql\Dump20221020.sql` 创建数据库表
-4、运行项目
+4. 运行项目
 使用命令
 `gf run main.exe`   
 开发过程中可使用vscode等工具的调试模式启动
-5、编译项目
+5. 编译项目
 使用`gf build`可根据`hack\config.yaml`中配置的编译配置编译项目。生成可执行文件。
-6、打包项目
+6. 打包项目
 项目可采用docker的形式部署，可使用命令
 ` gf docker main.go  -tn youDockerHub/election:test` 将程序打包成镜像，
 或者根据`manifest\docker\Dockerfile`文件使用`docker build`命令将程序打包成镜像
-7、部署项目
+7. 部署项目
 服务器拉取docker镜像。使用命令后台启动容器
 `docker run -itd -p 8000:8000 --name election youDockerHub/election:test`
 

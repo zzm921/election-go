@@ -24,7 +24,7 @@ database:
 
 redis:
   default:
-    address:    120.79.92.226:6379
+    address:    youIp:6379
     db:          1
-    pass:        zhexia
+    pass:        youpass
     idleTimeout: 600

@@ -16,9 +16,9 @@ import (
 var (
 	EmailAddr = "smtp.exmail.qq.com:465"
 	EmailHost = "smtp.exmail.qq.com"
-	EmailFrom = "zhangzheming@cocheer.net"
-	EmailUser = "zhangzheming@cocheer.net"
-	EmailPass = "824781943Qwq"
+	EmailFrom = "youEmail"
+	EmailUser = "youEmail"
+	EmailPass = "youEmailPassword"
 )
 
 type EmailBody struct {

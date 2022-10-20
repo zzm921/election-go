@@ -18,7 +18,7 @@ type ElectionCreateRes struct{}
 // 修改选举状态
 type ElectionChangeStatusReq struct {
 	g.Meta     `path:"/election/:ElectionId/status" method:"put" tags:"ElectionService" summary:"election changeStatus"`
-	Status     int `v:"required" json:"Status" description:"选举状态 0-未开始 1-进行中 2-结束"`
+	Status     int `v:"in:0,1,2" json:"Status" description:"选举状态 0-未开始 1-进行中 2-结束"`
 	ElectionId int `v:"required" json:"electionId" description:"选举id"`
 }
 type ElectionChangeStatusRes struct {

@@ -7,3 +7,9 @@ gfcli:
       tables:          "accounts,candidates,election_config_candidates,elections,election_user_details"
       descriptionTag:  true
       noModelComment:  true
+  build:
+    name:     "main"
+    arch:     "amd64"
+    system:   "linux"
+    mod:      "none"
+    output:   "./bin"

@@ -20,7 +20,7 @@ type CandidateUpdateReq struct {
 	g.Meta       `path:"/candidate/:CandidateId" method:"put" tags:"CandidateService" summary:"candidate update"`
 	Name         string `v:"required" json:"name" description:"候选人名称"`
 	Introduction string `v:"required" json:"introduction" description:"候选人简介"`
-	Image        string `v:"required" json:"image" description:"候选人头像url"`
+	Image        string `v:"url" json:"image" description:"候选人头像url"`
 	CandidateId  int    `v:"required" json:"candidateId" description:"候选人id"`
 }
 type CandidateUpdateRes struct{}
@@ -28,7 +28,7 @@ type CandidateUpdateRes struct{}
 // 修改状态
 type CandidateChangeStatusReq struct {
 	g.Meta      `path:"/candidate/:CandidateId/status" method:"put" tags:"CandidateService" summary:"candidate changeStatus"`
-	Status      int `v:"required" json:"status" description:"候选人状态 1-可用 0-不可用"`
+	Status      int `v:"in:0,1" json:"status" description:"候选人状态 1-可用 0-不可用"`
 	CandidateId int `v:"required" json:"name" description:"候选人Id"`
 }
 type CandidateChangeStatusRes struct{}

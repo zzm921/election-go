@@ -5,7 +5,8 @@ import (
 
 	"election/internal/consts"
 	"election/internal/controller"
-	"election/internal/lib"
+	"election/internal/lib/validator"
+	"election/internal/service"
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/net/ghttp"
@@ -21,7 +22,7 @@ var (
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
 			s := g.Server()
 			s.Use(ghttp.MiddlewareHandlerResponse)
-			lib.ValiidatorInit()
+			validator.ValiidatorInit()
 			s.Group("/crm", func(group *ghttp.RouterGroup) {
 				// Group middlewares.
 				group.Middleware(
@@ -34,7 +35,7 @@ var (
 					controller.Candidate,
 				)
 				group.Group("/", func(group *ghttp.RouterGroup) {
-					// group.Middleware(service.Middleware().AccountAuth)
+					group.Middleware(service.Middleware().AccountAuth)
 					group.Bind(
 						controller.Electoin,
 						controller.Candidate,

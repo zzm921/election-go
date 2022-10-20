@@ -2,9 +2,9 @@ package election
 
 import (
 	"context"
+	"election/internal/consts"
 	"election/internal/dao"
-	"election/internal/lib"
-	response "election/internal/lib"
+	"election/internal/lib/email"
 	"election/internal/model"
 	"election/internal/model/do"
 	"election/internal/model/entity"
@@ -52,6 +52,7 @@ func (s *sElection) Create(ctx context.Context, in model.ElectionCreateInput) (e
 		if err != nil {
 			return err
 		}
+		//插入候选人信息
 		var electionConfigCandidateList []entity.ElectionConfigCandidates
 		for _, candidateId := range candidates {
 			electionConfigCandidateList = append(electionConfigCandidateList, entity.ElectionConfigCandidates{
@@ -79,11 +80,22 @@ func (s *sElection) ChangeStatus(ctx context.Context, in model.ElectionChangeSta
 	}
 	//选举不存在返回错误
 	if electionsDbResult == nil {
-		return gerror.NewCode(gcode.New(response.DataNoExistCode, "", nil), "选举不存在")
+		return gerror.NewCode(gcode.New(consts.DataNoExistCode, "", nil), "选举不存在")
 	}
 	//校验选举状态 只能从 未开始0->开始1->结束2
 	if status-electionsDbResult.Status != 1 {
 		return gerror.Newf(`无法设置该status参数`)
+	}
+	if status == 1 {
+		//查看是否有进行中的选举
+		var startedElection *entity.Elections
+		err := dao.Elections.Ctx(ctx).Where(g.Map{"status": 1}).Scan(&startedElection)
+		if err != nil {
+			return err
+		}
+		if startedElection != nil {
+			return gerror.NewCode(gcode.New(consts.DataNoExistCode, "", nil), "已存在正在进行的选举")
+		}
 	}
 	//更新选举状态
 	_, err2 := dao.Elections.Ctx(ctx).Data(g.Map{"status": status}).Where(g.Map{"Id": electionId}).Update()
@@ -92,7 +104,7 @@ func (s *sElection) ChangeStatus(ctx context.Context, in model.ElectionChangeSta
 	}
 	if status == 2 {
 		//发送选举结果邮件
-		go lib.SendElectionResult(ctx, in.ElectionId)
+		go email.SendElectionResult(ctx, in.ElectionId)
 
 	}
 	return

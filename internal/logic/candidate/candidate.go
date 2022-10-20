@@ -1,9 +1,9 @@
-package election
+package candidate
 
 import (
 	"context"
+	"election/internal/consts"
 	"election/internal/dao"
-	response "election/internal/lib"
 	"election/internal/model"
 	"election/internal/model/do"
 	"election/internal/model/entity"
@@ -46,7 +46,7 @@ func (s *sCandidate) Update(ctx context.Context, in model.CandidateUpdateInput) 
 	}
 	//不存在返回错误
 	if candidateDbResult == nil {
-		return gerror.NewCode(gcode.New(response.DataNoExistCode, "", nil), "需更新数据不存在")
+		return gerror.NewCode(gcode.New(consts.DataNoExistCode, "", nil), "需更新数据不存在")
 	}
 	//更新候选人信息
 	_, err = dao.Candidates.Ctx(ctx).Data(do.Candidates{
@@ -69,7 +69,7 @@ func (s *sCandidate) ChangeStatus(ctx context.Context, in model.CandidateChangeS
 	}
 	//不存在返回错误
 	if candidateDbResult == nil {
-		return gerror.NewCode(gcode.New(response.DataNoExistCode, "", nil), "需更新数据不存在")
+		return gerror.NewCode(gcode.New(consts.DataNoExistCode, "", nil), "需更新数据不存在")
 	}
 	//更新候选人状态
 	_, err = dao.Candidates.Ctx(ctx).Data(g.Map{"status": status}).Where(g.Map{"Id": candidateId}).Update()

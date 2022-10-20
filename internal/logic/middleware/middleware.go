@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	response "election/internal/lib"
+	"election/internal/consts"
 	"election/internal/model"
 	"election/internal/service"
 	"encoding/json"
@@ -47,8 +47,8 @@ func (s *sMiddleware) AccountAuth(r *ghttp.Request) {
 	if accountDataStr.String() == "" {
 		//未登录返回
 		r.Response.WriteJson(g.Map{
-			"code":    response.AuthorizedFailCode,
-			"message": response.AuthorizedFailMsg,
+			"code":    consts.AuthorizedFailCode,
+			"message": consts.AuthorizedFailMsg,
 			"data":    nil,
 		})
 	}

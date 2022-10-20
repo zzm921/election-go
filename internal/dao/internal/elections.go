@@ -24,8 +24,6 @@ type ElectionsColumns struct {
 	Title        string // 选举标题
 	Introduction string //
 	Status       string // 状态 0 - 未开始 1 - 进行中 2 - 已结束
-	Starttime    string //
-	Endtime      string //
 }
 
 // electionsColumns holds the columns for table elections.
@@ -34,8 +32,6 @@ var electionsColumns = ElectionsColumns{
 	Title:        "title",
 	Introduction: "introduction",
 	Status:       "status",
-	Starttime:    "starttime",
-	Endtime:      "endtime",
 }
 
 // NewElectionsDao creates and returns a new DAO object for table data access.

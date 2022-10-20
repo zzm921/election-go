@@ -1,9 +1,9 @@
-package election
+package user
 
 import (
 	"context"
+	"election/internal/consts"
 	"election/internal/dao"
-	response "election/internal/lib"
 	"election/internal/model"
 	"election/internal/model/do"
 	"election/internal/model/entity"
@@ -35,7 +35,7 @@ func (s *sUser) GetElection(ctx context.Context, in model.UserElectionGetInput) 
 	}
 	//当前没有开始的选举
 	if currentElection == nil {
-		return nil, gerror.NewCode(gcode.New(response.DataNoExistCode, "", nil), "当前没有进行中选举")
+		return nil, gerror.NewCode(gcode.New(consts.DataNoExistCode, "", nil), "当前没有进行中选举")
 	}
 	//处理list数据
 	candidates := currentElection.Candidates
@@ -68,7 +68,7 @@ func (s *sUser) Vote(ctx context.Context, in model.UserVoteInput) (err error) {
 	}
 	//找不到，表示选举不存在或已结束
 	if currentElection == nil {
-		return gerror.NewCode(gcode.New(response.DataNoExistCode, "", nil), "该选举不存在或已结束")
+		return gerror.NewCode(gcode.New(consts.DataNoExistCode, "", nil), "该选举不存在或已结束")
 	}
 	//判断用户是否已经投过票
 	var userElectionDetail *entity.ElectionConfigCandidates
@@ -77,7 +77,7 @@ func (s *sUser) Vote(ctx context.Context, in model.UserVoteInput) (err error) {
 		return err
 	}
 	if userElectionDetail != nil {
-		return gerror.NewCode(gcode.New(response.DataExistCode, "", nil), "该用户已经投过票")
+		return gerror.NewCode(gcode.New(consts.DataExistCode, "", nil), "该用户已经投过票")
 	}
 
 	//开始投票

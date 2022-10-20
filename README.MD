@@ -80,6 +80,7 @@
 | 选举创建         | 创建选举                         | post /crm/election                                           |
 | 选举更新状态     | 更新选举状态(开始或结束)         | put  `/crm/election/:ElectionId/status`                      |
 | 选举查看         | 查看所有的选举                   | get   `/crm/election`                                        |
-| 选举候选人查看   | 产看参与选举的候选人信息得票数等 | get `/crm/election/:ElectionId/candidates/:CandidateId/vote` |
+| 选举候选人查看         | 产看候选人信息和票数                   | get   `/crm/election/:ElectionId/candidates`                                        |
+| 选举候选人投票详情查看   | 查看得票详情 | get `/crm/election/:ElectionId/candidates/:CandidateId/vote` |
 | 用户获取当前选举 | 查看当前进行中的选举             | get `/user/election  `                                       |
 | 用户投票         | 用户选举投票                     | post `/user/vote`                                                             |

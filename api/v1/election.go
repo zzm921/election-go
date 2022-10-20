@@ -24,7 +24,7 @@ type ElectionChangeStatusReq struct {
 type ElectionChangeStatusRes struct {
 }
 
-// 获取选举
+// 获取选举候选人得票详情
 type ElectionCandidateVoteGetReq struct {
 	g.Meta      `path:"/election/:ElectionId/candidates/:CandidateId/vote" method:"get" tags:"ElectionService" summary:"election candidatesVoteGet"`
 	ElectionId  int `v:"required" json:"electionId" description:"选举id"`
@@ -36,7 +36,7 @@ type ElectionCandidateVoteGetRes struct {
 	*model.ElectionCandidateVoteGetOut
 }
 
-// 获取选举
+// 获取选举候选人信息
 type ElectionCandidateGetReq struct {
 	g.Meta     `path:"/election/:ElectionId/candidates" method:"get" tags:"ElectionService" summary:"election candidatesGet"`
 	ElectionId int `v:"required" json:"electionId" description:"选举id"`

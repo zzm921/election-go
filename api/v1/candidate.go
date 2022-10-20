@@ -33,7 +33,7 @@ type CandidateChangeStatusReq struct {
 }
 type CandidateChangeStatusRes struct{}
 
-// 修改状态
+// 获取
 type CandidateGetReq struct {
 	g.Meta `path:"/candidate" method:"get" tags:"CandidateService" summary:"candidate get"`
 	Page   int `d:"1"  v:"min:0#分页号码错误" json:"page" description:"页数"` // 分页号码

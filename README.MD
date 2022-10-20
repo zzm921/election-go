@@ -66,3 +66,20 @@
 ##### 邮件发送
 邮件发送使用三方邮件包。使用时需改为自身的邮箱配置
 使用go协程池时间邮件群发
+
+#### 接口使用说明
+详细接口文档见`localhost:8000/swagger`.
+
+接口列表说明
+| 接口             | 说明                             | 地址                                                         |
+| ---------------- | -------------------------------- | ------------------------------------------------------------ |
+| 账号登录         | 登录后台                         | get `/crm/account/login`                                     |
+| 候选人创建       | 创建候选人信息                   | post `/crm/candidate`                                        |
+| 候选人更新       | 更新候选人信息                   | put `/crm/candidate/:CandidateId`                            |
+| 候选人获取       | 获取候选人信息                   | get   `/crm/candidate`                                       |
+| 选举创建         | 创建选举                         | post /crm/election                                           |
+| 选举更新状态     | 更新选举状态(开始或结束)         | put  `/crm/election/:ElectionId/status`                      |
+| 选举查看         | 查看所有的选举                   | get   `/crm/election`                                        |
+| 选举候选人查看   | 产看参与选举的候选人信息得票数等 | get `/crm/election/:ElectionId/candidates/:CandidateId/vote` |
+| 用户获取当前选举 | 查看当前进行中的选举             | get `/user/election  `                                       |
+| 用户投票         | 用户选举投票                     | post `/user/vote`                                                             |

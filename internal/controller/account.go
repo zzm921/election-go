@@ -29,5 +29,6 @@ func (c *cAccount) Login(ctx context.Context, req *v1.AccountSignUpReq) (res *v1
 	if err != nil {
 		return nil, err
 	}
+	g.RequestFromCtx(ctx).Cookie.Set("accountToken", accountLoginOut.Token)
 	return &v1.AccountSignUpRes{AccountLoginOut: accountLoginOut}, nil
 }

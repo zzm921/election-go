@@ -7,13 +7,12 @@ package service
 
 import (
 	"context"
-	response "election/internal/lib"
 	"election/internal/model"
 )
 
 type (
 	IAccount interface {
-		Login(ctx context.Context, in model.AccountLoginInput) *response.ResultRes
+		Login(ctx context.Context, in model.AccountLoginInput) (*model.AccountLoginOut, error)
 	}
 )
 

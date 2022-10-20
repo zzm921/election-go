@@ -6,18 +6,8 @@ type AccountLoginInput struct {
 }
 
 type AccountLoginOut struct {
-	Token    string
-	Username string
-	Role     int
-}
-
-type AccountCreateInput struct {
-	Username string
-	Password string
-	Role     string
-}
-
-type AccountCreateOut struct {
-	Username string
-	Role     string
+	Id       int    `json:"id"          description:"账号"`
+	Token    string `json:"token"          description:"token"`
+	Username string `json:"username"          description:"账号名"`
+	Role     int    `json:"role"          description:"角色"`
 }

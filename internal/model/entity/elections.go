@@ -5,6 +5,7 @@
 package entity
 
 import (
+
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
@@ -16,4 +17,5 @@ type Elections struct {
 	Status       int         `json:"status"       description:"状态 0 - 未开始 1 - 进行中 2 - 已结束"`
 	Starttime    *gtime.Time `json:"starttime"    description:""`
 	Endtime      *gtime.Time `json:"endtime"      description:""`
+	Candidates []*ElectionConfigCandidates `orm:"with:electionId=id"`
 }

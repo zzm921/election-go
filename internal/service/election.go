@@ -7,13 +7,16 @@ package service
 
 import (
 	"context"
-	response "election/internal/lib"
 	"election/internal/model"
 )
 
 type (
 	IElection interface {
-		Create(ctx context.Context, in model.ElectionCreateInput) *response.ResultRes
+		Create(ctx context.Context, in model.ElectionCreateInput) (err error)
+		ChangeStatus(ctx context.Context, in model.ElectionChangeStatuInput) (err error)
+		Get(ctx context.Context, in model.ElectionGetInput) (*model.ElectionGetOut, error)
+		GetElectionCandidate(ctx context.Context, in model.ElectionCandidateGetInput) (*model.ElectionCandidateGetOut, error)
+		GetElectionCandidateVote(ctx context.Context, in model.ElectionCandidateVoteGetInput) (*model.ElectionCandidateVoteGetOut, error)
 	}
 )
 
